@@ -1,3 +1,15 @@
+buildscript {
+    ext.kotlin_version = '1.9.0'
+    repositories {
+        google()
+        mavenCentral()
+    }
+//    dependencies {
+//        // تحديث إلى النسخة المناسبة من AGP
+//        classpath 'com.android.tools.build:gradle:8.2.1'// تأكد من أنك تستخدم الإصدار 8.2.1 أو أعلى
+//    }
+}
+
 allprojects {
     repositories {
         google()
