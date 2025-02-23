@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:koran_app/pages/home_page_wrapper.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:koran_app/manager/cubit.dart';
+import 'package:koran_app/pages/surah_page.dart';
 
 void main() {
   runApp(KoranApp());
@@ -10,9 +12,14 @@ class KoranApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePageWrapper(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => SurahCubit()..getSurah()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SurahPage(),
+      ),
     );
   }
 }
