@@ -24,7 +24,7 @@ class _AyahsPageState extends State<AyahsPage> {
   @override
   void initState() {
     super.initState();
-    context.read<SurahCubit>().getAyahs(id: widget.surahId);
+    context.read<AppCubit>().getAyahs(id: widget.surahId);
   }
 
   Future<void> _playAyahAudio(String ayahNumber) async {
@@ -40,7 +40,7 @@ class _AyahsPageState extends State<AyahsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SurahCubit, AppState>(builder: (context, state) {
+    return BlocBuilder<AppCubit, AppState>(builder: (context, state) {
       if (state is SuccessAyahsState) {
         return Scaffold(
           appBar: CustomAppBar(title: widget.title),
@@ -90,7 +90,7 @@ class _AyahsPageState extends State<AyahsPage> {
                               },
                             children: [
                               TextSpan(
-                                text: " (${ayah.number}) ",
+                                text: " (${ayah.numberInSurah}) ",
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,

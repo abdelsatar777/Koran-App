@@ -4,14 +4,14 @@ import '../../utils/colors.dart';
 
 class CustomFeatureCard extends StatelessWidget {
   final String title;
-  final IconData icon;
-  final GestureTapCallback onTap;
+  final String icon;
+  final Widget targetPage;
 
   const CustomFeatureCard({
     super.key,
     required this.title,
     required this.icon,
-    required this.onTap,
+    required this.targetPage,
   });
 
   @override
@@ -19,7 +19,14 @@ class CustomFeatureCard extends StatelessWidget {
     return Column(
       children: [
         GestureDetector(
-          onTap: onTap,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => targetPage,
+              ),
+            );
+          },
           child: Container(
             margin: EdgeInsets.all(5),
             padding: EdgeInsets.all(16),
@@ -27,11 +34,7 @@ class CustomFeatureCard extends StatelessWidget {
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: Icon(
-              icon,
-              size: 40,
-              color: Colors.white,
-            ),
+            child: ImageIcon(AssetImage(icon), size: 40, color: Colors.white),
           ),
         ),
         Text(

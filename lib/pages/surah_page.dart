@@ -16,8 +16,14 @@ class SurahPage extends StatefulWidget {
 
 class _SurahPageState extends State<SurahPage> {
   @override
+  void initState() {
+    super.initState();
+    context.read<AppCubit>().getSurah();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SurahCubit, AppState>(
+    return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         if (state is SuccessState) {
           return Scaffold(
