@@ -4,21 +4,28 @@ import 'package:koran_app/utils/colors.dart';
 
 class PrayerTimeline extends StatelessWidget {
   final List<Map<String, dynamic>> prayers = [
-    {"time": "20:00", "icon": Icons.brightness_3}, // العشاء
-    {"time": "18:30", "icon": Icons.nightlight_round}, // المغرب
-    {"time": "15:45", "icon": Icons.wb_sunny_outlined}, // العصر
-    {"time": "12:30", "icon": Icons.wb_sunny}, // الظهر
-    {"time": "06:15", "icon": Icons.sailing}, // الشروق
-    {"time": "05:00", "icon": Icons.nights_stay}, // الفجر
+    {"time": "05:07 AM", "icon": Icons.nights_stay}, // الفجر
+    {"time": "06:34 AM", "icon": Icons.sailing}, // الشروق
+    {"time": "12:09 PM", "icon": Icons.wb_sunny}, // الظهر
+    {"time": "03:33 PM", "icon": Icons.wb_sunny_outlined}, // العصر
+    {"time": "05:44 PM", "icon": Icons.nightlight_round}, // المغرب
+    {"time": "07:03 PM", "icon": Icons.brightness_3}, // العشاء
   ];
 
   PrayerTimeline({super.key});
 
   int getCurrentPrayerIndex() {
-    String now = DateFormat("HH:mm").format(DateTime.now());
+    DateTime now = DateTime.now();
+    DateFormat format = DateFormat("hh:mm a"); // تنسيق 12 ساعة
+
     for (int i = 0; i < prayers.length; i++) {
-      if (now.compareTo(prayers[i]["time"]) < 0) {
-        return i - 1; // ترجع آخر صلاة مرت
+      // تحويل الوقت إلى اليوم الحالي
+      DateTime prayerTime = format.parse(prayers[i]["time"]);
+      prayerTime = DateTime(
+          now.year, now.month, now.day, prayerTime.hour, prayerTime.minute);
+
+      if (now.isBefore(prayerTime)) {
+        return i - 1; // آخر صلاة دخل وقتها
       }
     }
     return prayers.length - 1; // لو الوقت بعد العشاء
@@ -32,9 +39,12 @@ class PrayerTimeline extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: Column(
         children: [
+          // الخط الزمني للصلوات
           Row(
             children: List.generate(prayers.length, (index) {
-              bool isActive = index <= currentIndex;
+              bool isPassed = index <= currentIndex; // الصلوات السابقة
+              bool isCurrent = index == currentIndex; // الصلاة الحالية
+
               return Expanded(
                 child: Stack(
                   alignment: Alignment.center,
@@ -45,43 +55,70 @@ class PrayerTimeline extends StatelessWidget {
                         right: 0,
                         child: Container(
                           height: 2,
-                          color: isActive
+                          color: isPassed
                               ? AppColors.primaryColor
-                              : Colors.grey[300],
+                              : Colors.grey.shade300,
                         ),
                       ),
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border:
-                            Border.all(color: AppColors.primaryColor, width: 2),
+                        border: Border.all(
+                          color: isCurrent
+                              ? AppColors.primaryColor
+                              : Colors.grey.shade400,
+                          width: 2,
+                        ),
                       ),
                       child: CircleAvatar(
                         backgroundColor:
-                            isActive ? AppColors.primaryColor : Colors.white,
+                            isPassed ? AppColors.primaryColor : Colors.white,
                         radius: 15,
-                        child: isActive
-                            ? Icon(Icons.check, color: Colors.white, size: 20)
-                            : Container(),
+                        child: isPassed
+                            ? Icon(Icons.check, color: Colors.white, size: 18)
+                            : isCurrent
+                                ? Icon(Icons.access_time,
+                                    color: AppColors.primaryColor, size: 18)
+                                : Container(),
                       ),
                     ),
                   ],
                 ),
               );
-            }),
+            }).reversed.toList(), // عكس الترتيب ليكون الفجر على اليسار
           ),
-          SizedBox(height: 10),
+
+          const SizedBox(height: 10),
+
+          // أيقونات وأوقات الصلوات
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(
               prayers.length,
-              (index) => Icon(
-                prayers[index]["icon"],
-                color: index <= currentIndex
-                    ? AppColors.primaryColor
-                    : Colors.black54,
+              (index) => Column(
+                children: [
+                  Icon(
+                    prayers[index]["icon"],
+                    color: index == currentIndex
+                        ? AppColors.primaryColor
+                        : Colors.black54,
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    prayers[index]["time"],
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: index == currentIndex
+                          ? AppColors.primaryColor
+                          : Colors.black54,
+                    ),
+                  ),
+                ],
               ),
-            ),
+            )
+                .reversed
+                .toList(), // عكس الترتيب ليكون الفجر في اليسار والعشاء في اليمين
           ),
         ],
       ),

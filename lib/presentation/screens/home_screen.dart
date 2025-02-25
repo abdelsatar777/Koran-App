@@ -3,7 +3,7 @@ import 'package:koran_app/pages/surah_page.dart';
 import 'package:koran_app/presentation/widgets/prayer_time_line.dart';
 import 'package:koran_app/presentation/widgets/prayer_time_widget.dart';
 import '../../pages/calendar_page.dart';
-import '../../pages/hadith_page.dart';
+import '../../pages/books_hadiths_page.dart';
 import '../../pages/lessons_page.dart';
 import '../widgets/custom_feature_card.dart';
 
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 CustomFeatureCard(
                   title: "الأحديث",
                   icon: "assets/img/الحديث.png",
-                  targetPage: HadithPage(),
+                  targetPage: BooksHadithsPage(),
                 ),
                 CustomFeatureCard(
                   title: "القرآن",

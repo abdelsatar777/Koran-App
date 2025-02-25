@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../presentation/screens/home_screen.dart';
-import '../presentation/screens/masjid_screen.dart';
-import '../presentation/screens/prayer_screen.dart';
-import '../presentation/screens/profile_screen.dart';
-import '../presentation/screens/quran_screen.dart';
+import '../presentation/screens/khotab_screen.dart';
+import '../presentation/screens/tasbeeh_screen.dart';
+import '../presentation/screens/settings_screen.dart';
+import '../presentation/screens/books_screen.dart';
 import '../utils/colors.dart';
 
 class HomePageWrapper extends StatefulWidget {
@@ -26,9 +26,9 @@ class _HomePageWrapperState extends State<HomePageWrapper> {
   ];
   final List<Widget> _pages = [
     HomeScreen(),
-    MasjidScreen(),
-    QuranScreen(),
-    PrayerScreen(),
+    KhotabScreen(),
+    BooksScreen(),
+    TasbeehScreen(),
     SettingsScreen(),
   ];
 

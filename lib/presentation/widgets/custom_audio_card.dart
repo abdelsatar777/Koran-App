@@ -50,8 +50,8 @@ class _CustomAudioCardState extends State<CustomAudioCard> {
 
     _currentAudio!.onTimeUpdate.listen((event) {
       setState(() {
-        _position = Duration(seconds: _currentAudio!.currentTime!.toInt());
-        _duration = Duration(seconds: _currentAudio!.duration!.toInt());
+        _position = Duration(seconds: _currentAudio!.currentTime.toInt());
+        _duration = Duration(seconds: _currentAudio!.duration.toInt());
       });
     });
 

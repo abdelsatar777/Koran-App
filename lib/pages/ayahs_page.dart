@@ -34,7 +34,13 @@ class _AyahsPageState extends State<AyahsPage> {
           "https://cdn.islamic.network/quran/audio/128/ar.alafasy/$ayahNumber.mp3"; // رابط تشغيل الصوت
       await _audioPlayer.play(UrlSource(audioUrl)); // تشغيل الصوت
     } catch (e) {
-      print("خطأ في تشغيل الصوت: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("خطأ في تشغيل الصوت: $e"),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ),
+      );
     }
   }
 

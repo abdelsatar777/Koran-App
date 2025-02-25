@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:koran_app/manager/cubit.dart';
-import 'package:koran_app/pages/home_page_wrapper.dart';
+import 'package:koran_app/pages/splash_page.dart';
 
 void main() {
   runApp(KoranApp());
@@ -17,10 +17,13 @@ class KoranApp extends StatelessWidget {
         BlocProvider(create: (context) => AppCubit()..getSurah()),
         BlocProvider(create: (context) => VideoCubit()..getVideo()),
         BlocProvider(create: (context) => AudiosCubit()..getAudios()),
+        BlocProvider(create: (context) => HadithCubit()..getBookHadith()),
+        BlocProvider(create: (context) => KhotabCubit()..getKhotab()),
+        BlocProvider(create: (context) => BooksCubit()..getBooks()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HomePageWrapper(),
+        home: SplashPage(),
       ),
     );
   }

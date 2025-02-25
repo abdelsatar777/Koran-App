@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:koran_app/pages/home_page_wrapper.dart';
 
 import '../presentation/widgets/custom_text_field.dart';
 import '../utils/colors.dart';
@@ -69,7 +70,14 @@ class _AuthScreenState extends State<AuthScreen> {
 
             // زر تسجيل الدخول أو إنشاء الحساب
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePageWrapper(),
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.textColor,
                 foregroundColor: Colors.white,

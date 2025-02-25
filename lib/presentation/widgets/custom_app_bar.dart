@@ -3,8 +3,13 @@ import 'package:koran_app/utils/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final bool hideIcon;
 
-  const CustomAppBar({super.key, required this.title});
+  const CustomAppBar({
+    super.key,
+    required this.title,
+    this.hideIcon = false, // القيمة الافتراضية: الأيقونة ظاهرة
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,18 +17,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: AppColors.primaryColor,
       centerTitle: true,
       title: Text(title),
-      titleTextStyle: TextStyle(fontSize: 26, color: Colors.white),
-      leading: IconButton(
-        onPressed: () => Navigator.pop(context),
-        icon: Icon(
-          Icons.arrow_back,
-          size: 20,
-          color: Colors.white,
-        ),
-      ),
+      titleTextStyle: const TextStyle(fontSize: 26, color: Colors.white),
+      leading: hideIcon
+          ? null // إخفاء الأيقونة إذا كان hideIcon = true
+          : IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(
+                Icons.arrow_back,
+                size: 20,
+                color: Colors.white,
+              ),
+            ),
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(60);
+  Size get preferredSize => const Size.fromHeight(60);
 }

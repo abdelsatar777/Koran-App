@@ -2,8 +2,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:koran_app/manager/state.dart';
 import 'package:koran_app/models/audio_model.dart';
 import 'package:koran_app/models/ayahs_model.dart';
+import 'package:koran_app/models/book_hadiths_model.dart';
+import 'package:koran_app/models/books_model.dart';
+import 'package:koran_app/models/khotab_model.dart';
 import 'package:koran_app/models/surah_model.dart';
 import 'package:koran_app/models/video_model.dart';
+import '../models/hadiths_model.dart';
 import '../network/api_service.dart';
 
 class AppCubit extends Cubit<AppState> {
@@ -98,6 +102,101 @@ class AudiosCubit extends Cubit<AppState> {
         );
       }
       emit(SuccessAudioState(audios: audios));
+    } catch (error) {
+      emit(ErrorState(errorMassage: error.toString()));
+    }
+  }
+}
+
+class HadithCubit extends Cubit<AppState> {
+  HadithCubit() : super(InitialState());
+  ApiService apiService = ApiService();
+
+  getBookHadith() async {
+    List<BookHadithsModel> bookHadiths = [];
+    emit(LoadingState());
+
+    try {
+      var data = await apiService.get_3(endPoint: "books");
+      for (var i in data["data"]) {
+        bookHadiths.add(
+          BookHadithsModel(
+            id: i["id"] ?? "No Id",
+            name: i["name"] ?? "No Name",
+            numberOfHadiths: i["available"].toString(),
+          ),
+        );
+      }
+      emit(SuccessBookHadithState(bookHadithsModel: bookHadiths));
+    } catch (error) {
+      emit(ErrorState(errorMassage: error.toString()));
+    }
+  }
+
+  getHadiths(String id) async {
+    List<HadithsModel> hadiths = [];
+    emit(LoadingState());
+    try {
+      var data = await apiService.get_3(endPoint: "books/$id?range=1-100");
+      for (var i in data["data"]["hadiths"]) {
+        hadiths.add(
+          HadithsModel(
+            hadithNumber: i["number"].toString(),
+            hadith: i["arab"] ?? "No Hadith",
+          ),
+        );
+      }
+      emit(SuccessHadithState(hadithsModel: hadiths));
+    } catch (error) {
+      emit(ErrorState(errorMassage: error.toString()));
+    }
+  }
+}
+
+class KhotabCubit extends Cubit<AppState> {
+  KhotabCubit() : super(InitialState());
+  ApiService apiService = ApiService();
+
+  getKhotab() async {
+    List<KhotabModel> khotab = [];
+    try {
+      var data = await apiService.get_2(
+          endPoint: "paV29H2gm56kvLPy/main/khotab/ar/ar/1/50/json");
+      for (var i in data["data"]) {
+        khotab.add(
+          KhotabModel(
+            title: i["title"] ?? "No Title",
+            description: i["description"] ?? "No Description",
+            url: i["attachments"] ?? [],
+          ),
+        );
+      }
+      emit(SuccessKhotabState(khotab: khotab));
+    } catch (error) {
+      emit(ErrorState(errorMassage: error.toString()));
+    }
+  }
+}
+
+class BooksCubit extends Cubit<AppState> {
+  BooksCubit() : super(InitialState());
+  ApiService apiService = ApiService();
+
+  getBooks() async {
+    List<BooksModel> books = [];
+    try {
+      var data = await apiService.get_2(
+          endPoint: "paV29H2gm56kvLPy/main/books/ar/ar/1/50/json");
+      for (var i in data["data"]) {
+        books.add(
+          BooksModel(
+            title: i["title"] ?? "No Title",
+            description: i["description"] ?? "No Description",
+            url: i["attachments"] ?? [],
+          ),
+        );
+      }
+      emit(SuccessBooksState(books: books));
     } catch (error) {
       emit(ErrorState(errorMassage: error.toString()));
     }
